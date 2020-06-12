@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    openservicebroker:
+       catalog:
+        services:
+        - name: mkt-service
+          id: mkt-service-id
+          description: A marketplace service
+          bindable: true
+          tags:
+          - mkt-service
+          plans:
+          - name: standard
+            id: mkt-plan-id
+            description: A standard plan
+            free: true
+    appbroker:
+      services:
+        - service-name: mkt-service
+          plan-name: standard
+          target:
+             name: ServiceInstanceGuidSuffix
+          apps:
+            - name: mkt-app
+              path: classpath:eurekaserverapp-0.0.1-SNAPSHOT.jar
+              credential-providers:
+                - name: SpringSecurityBasicAuth
+                  args:
+                    length: 6
+                    include-uppercase-alpha: false
+                    include-lowercase-alpha: false
+                    include-numeric: true
+                    include-special: false
+              properties:
+                count: 1
+                delete-routes: true
+      deployer:
+        cloudfoundry:
+          api-host: api.ocp-ic-test.kubecf.dev
+          api-port: 443
+          username: admin
+          password: uzFxvDBXJS0nFSe9PwgHtMuyTLH5B7W5zj58Fc4tIaajjalUXw28r9aXAzwVyuBD
+          default-org: demo-org
+          default-space: demo-space
+       
